@@ -27,16 +27,20 @@ type BankProviders struct {
 	Providers
 }
 
-type AccountMapping struct {
-	gorm.Model
-	BankproviderId        int
-	BankAccount           string
-	BudgetProviderId      int
-	BudgetProviderAccount string
+type TransactionCache struct {
+	id      int    `gorm:"AUTO_INCREMENT"`
+	Hash    string `gorm:"UNIQUE_INDEX"`
+	Account string
+	TrxDate string
+	Type    string
+	Ref     string
+	Debet   int
+	Kredit  int
+	Rawdata string
 }
 
-type Logging struct {
-	ID      int `gorm:"AUTO_INCREMENT"`
+type LogStatements struct {
+	id      int `gorm:"AUTO_INCREMENT"`
 	Date    *time.Time
 	Level   string
 	Source  string

@@ -27,6 +27,6 @@ func (dc *DBController) Migrate() {
 	fmt.Println("INFO migrating tabels")
 	dc.DB.AutoMigrate(&BudgetProviders{})
 	dc.DB.AutoMigrate(&BankProviders{})
-	dc.DB.AutoMigrate(&AccountMapping{})
-	dc.DB.AutoMigrate(&Logging{})
+	dc.DB.AutoMigrate(&TransactionCache{})
+	dc.DB.AutoMigrate(&LogStatements{})
 }
