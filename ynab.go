@@ -17,7 +17,7 @@ func budget() {
 
 	accounts, _ := client.AccountsService.List(myBudgetId)
 	for _, account := range accounts {
-		Note := ""
+		Note := "" //
 		if account.Note != nil {
 			Note = *account.Note
 		}
