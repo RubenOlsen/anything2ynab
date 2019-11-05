@@ -1,42 +1,58 @@
 package main
 
 import (
-	"fmt"
 	"github.com/RubenOlsen/anything2ynab/BackingStore"
+	log "github.com/RubenOlsen/anything2ynab/logging"
+	"github.com/davidsteinsland/ynab-go/ynab"
+	"regexp"
 )
 
-type BudgetData struct {
+type YnabAccount struct {
+	Name     string
+	Id       string
+	SyncData string
 }
 
-func FetchBudgetAccounts(dc BackingStore.DBController) {
+type YnabLogAccount struct {
+	Id string
+}
+
+func FetchBudgetAccounts(dc BackingStore.DBController) map[string]YnabAccount {
 
 	BudgetData := BackingStore.BudgetProviders{}
 	BudgetData = dc.FetchBudgetProviders()
-	fmt.Println(BudgetData)
 
-	/*
-			const accessToken = "559e9289d528bfa34c45a6a68c0c5006f9d0cca04eb749033239591fdd9df937"
-			client := ynab.NewDefaultClient(accessToken)
+	log.Info("Budget name: %s | API key %s", BudgetData.BudgetName, BudgetData.Apikey)
 
-			// myBudgetId := "3acbb288-829f-47a5-8f0b-63ef13f4c6c1"
-			myBudgetId := "3acbb288-829f-47a5-8f0b-63ef13f4c6c1"
-			// myAccountId := "b1ebfb88-dee2-486b-8c4d-310a8623ad76"
-			//
+	client := ynab.NewDefaultClient(BudgetData.Apikey)
 
-			accounts, _ := client.AccountsService.List(myBudgetId)
-			for _, account := range accounts {
+	rex := *regexp.MustCompile(`^sync\s+(\w+)`)
+	returnMap := make(map[string]YnabAccount)
+
+	accounts, _ := client.AccountsService.List(BudgetData.BudgetId)
+	for _, account := range accounts {
+		if !account.Closed {
+
 			Note := "" //
 			if account.Note != nil {
-			Note = *account.Note
-			}
-			fmt.Println("\nName: ", account.Name,
-			"\nNote: ", Note,
-			"\nBal:  ", account.Balance,
-			"\nCB:   ", account.ClearedBalance,
-			"\nId:   ", account.Id,
-			"\nOB:   ", account.OnBudget,
-			"\nTy:   ", account.Type,
-			"\nUC:   ", account.UnclearedBalance)
+				Note = *account.Note
+				res := rex.FindStringSubmatch(Note)
+				if len(res) > 0 {
 
-	}*/
+					YAC := YnabAccount{
+						Name:     account.Name,
+						Id:       account.Id,
+						SyncData: res[1],
+					}
+
+					returnMap[res[1]] = YAC
+					// YnabAccounts = append(YnabAccounts, YAC)
+					log.Debug("Adding %s SD:%s ID:%s", account.Name, res[1], account.Id)
+				}
+			}
+
+		}
+
+	}
+	return returnMap
 }

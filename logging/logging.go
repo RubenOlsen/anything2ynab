@@ -31,6 +31,11 @@ func init() {
 	// log.SetOutput(mw)
 }
 
+// Debug...
+func Debug(format string, v ...interface{}) {
+	log.Debugf(format, v...)
+}
+
 // Info ...
 func Info(format string, v ...interface{}) {
 	log.Infof(format, v...)

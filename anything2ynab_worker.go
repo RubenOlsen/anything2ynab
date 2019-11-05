@@ -15,7 +15,13 @@ func main() {
 
 	// budgetinfo = BackingStore.BudgetProviders{}
 	// budgetinfo = backstore.FetchBudgetProviders()
-	FetchBudgetAccounts(databaseObject)
+	// YnabAccounts := []YnabAccount
+	YnabAccounts := FetchBudgetAccounts(databaseObject)
+	for key, YAC := range YnabAccounts {
+		log.Info("Retur k:%v v.Name:%v", key, YAC.Name)
+	}
+
+	// log.Info("YANB LOG ACCOUNT %", YnabLogAccount.Id)
 
 	//budget()
 }
