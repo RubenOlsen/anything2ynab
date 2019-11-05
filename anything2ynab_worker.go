@@ -1,16 +1,21 @@
 package main
 
 import (
-	"fmt"
 	"github.com/RubenOlsen/anything2ynab/BackingStore"
+	log "github.com/RubenOlsen/anything2ynab/logging"
 )
 
 func main() {
 
-	BackintStore := BackingStore.DBController{}
-	BackintStore.Connect()
-	BackintStore.Migrate()
-	fmt.Println("Ready to rumble")
+	// db := BackingStore.DBController{}
+	backstore := BackingStore.DBController{}
+	databaseObject := backstore.Connect()
+	backstore.Migrate()
+	log.Info("Ready to rumble")
 
-	budget()
+	// budgetinfo = BackingStore.BudgetProviders{}
+	// budgetinfo = backstore.FetchBudgetProviders()
+	FetchBudgetAccounts(databaseObject)
+
+	//budget()
 }

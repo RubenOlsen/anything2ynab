@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type Providers struct {
+type BankProviders struct {
 	gorm.Model
 	id           int `gorm:"AUTO_INGREMENT"`
 	Memonic      string
@@ -20,11 +20,11 @@ type Providers struct {
 }
 
 type BudgetProviders struct {
-	Providers
-}
-
-type BankProviders struct {
-	Providers
+	gorm.Model
+	id         int `gorm:"AUTO_INGREMENT"`
+	BudgetName string
+	BudgetId   string
+	Apikey     string
 }
 
 type TransactionCache struct {
