@@ -7,16 +7,17 @@ import (
 
 type BankProviders struct {
 	gorm.Model
-	id           int `gorm:"AUTO_INGREMENT"`
-	Memonic      string
-	Providername string
-	Username     string
-	Apikey       string
-	Password     string
-	Status       int
-	LastSync     string // date of last sync
-	Param1       string
-	Param2       string
+	id            int `gorm:"AUTO_INGREMENT"`
+	Memonic       string
+	Providername  string
+	Username      string
+	Apikey        string
+	Password      string
+	Status        int
+	LastSync      string // date of last sync
+	LastMonthSync int    // YYYYMM
+	Param1        string
+	Param2        string
 }
 
 type BudgetProviders struct {

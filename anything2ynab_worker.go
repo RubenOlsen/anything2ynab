@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/RubenOlsen/anything2ynab/BackingStore"
+	prov "github.com/RubenOlsen/anything2ynab/Providers"
 	log "github.com/RubenOlsen/anything2ynab/logging"
 )
 
@@ -13,13 +14,12 @@ func main() {
 	backstore.Migrate()
 	log.Info("Ready to rumble")
 
-	// budgetinfo = BackingStore.BudgetProviders{}
-	// budgetinfo = backstore.FetchBudgetProviders()
-	// YnabAccounts := []YnabAccount
 	YnabAccounts := FetchBudgetAccounts(databaseObject)
 	for key, YAC := range YnabAccounts {
-		log.Info("Retur k:%v v.Name:%v", key, YAC.Name)
+		log.Debug("Retur k:%v v.Name:%v", key, YAC.Name)
 	}
+
+	prov.Sbn()
 
 	// log.Info("YANB LOG ACCOUNT %", YnabLogAccount.Id)
 

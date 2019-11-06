@@ -3,10 +3,9 @@ package Providers
 import (
 	"fmt"
 	sbanken "github.com/RubenOlsen/go-sbanken"
-	"regexp"
 )
 
-func sbn() {
+func Sbn() {
 
 	// fmt.Println("RUBEn", os.Getenv("RUBEN"))
 
@@ -21,26 +20,27 @@ func sbn() {
 		fmt.Printf("%-14s %-40s %9.2f %s\n", account.AccountNumber, account.Name, account.Balance, account.AccountID)
 	}
 
-	r := *regexp.MustCompile(`^((?P<kort>\*\d+)\s(?P<dato>\d\d\.\d\d)\s(?P<valuta>[A-Z]{3})\s(?P<belop>\d+\.\d+))*(\s*(?P<tdato>\d+\.\d+))*\s?(?P<sted>.+?)((?i)\s(kurs):\s?(?P<kurs>\d+\.?\d+))*$`)
+	//	r := *regexp.MustCompile(`^((?P<kort>\*\d+)\s(?P<dato>\d\d\.\d\d)\s(?P<valuta>[A-Z]{3})\s(?P<belop>\d+\.\d+))*(\s*(?P<tdato>\d+\.\d+))*\s?(?P<sted>.+?)((?i)\s(kurs):\s?(?P<kurs>\d+\.?\d+))*$`)
 
 	transactions := conn.GetTransactions("44BBE700A0F7EB22755C88C16ECA40D4")
 	for _, transaction := range transactions {
 
-		var transformation Transformation
+		fmt.Printf("%v", transaction.Text)
+		//var transformation Transformation
 
-		if transaction.CardDetailsSpecified {
-			transformation.CardNumber = transaction.CardDetails.CardNumber
-		} else {
-			// fmt.Println("%#v", r.SubexpNames())
-			res := r.FindStringSubmatch(transaction.Text)
-			for i := 0; i < len(res); i++ {
+		/*		if transaction.CardDetailsSpecified {
+					transformation.CardNumber = transaction.CardDetails.CardNumber
+				} else {
+					// fmt.Println("%#v", r.SubexpNames())
+					res := r.FindStringSubmatch(transaction.Text)
+					for i := 0; i < len(res); i++ {
 
-				fmt.Printf("%s ||2: %i %s\n", transaction.Text, i, res[i])
+						fmt.Printf("%s ||2: %i %s\n", transaction.Text, i, res[i])
 
-			}
-			fmt.Printf("\n")
+					}
+					fmt.Printf("\n")
 
-		}
+						}*/
 		/*
 		   	 	fmt.Printf("%-10s | %-8s |%-10s| %s| %s | %s | %9.2f\n",
 		   	 		transaction.AccountingDate,
