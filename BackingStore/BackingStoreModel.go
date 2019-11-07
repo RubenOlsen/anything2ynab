@@ -12,6 +12,7 @@ type BankProviders struct {
 	Providername  string
 	Username      string
 	Apikey        string
+	CustomerId    string
 	Password      string
 	Status        int
 	LastSync      string // date of last sync

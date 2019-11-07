@@ -2,57 +2,36 @@ package Providers
 
 import (
 	"fmt"
+	log "github.com/RubenOlsen/anything2ynab/logging"
 	sbanken "github.com/RubenOlsen/go-sbanken"
+	"os"
 )
 
-func Sbn() {
+func Sbanken() {
 
 	// fmt.Println("RUBEn", os.Getenv("RUBEN"))
+	log.Debug("Inside Sbn")
 
-	creds := sbanken.Credentials{"edbc33bf87e943b1957e85931658f609", "xhR4l=9IQjYtG-j=3SbtMV+AypbbqXWj322Ex9y9s?ixolBeAb?WEmEB6z0kneHn", "24116842358"}
+	creds := sbanken.Credentials{"edbc33bf87e943b1957e85931658f609",
+		"cwf?SE3aL3Ddqw=XtZRuj?jKTb?4dkoYT3EICcnp0EbMA-g+0z+HI8y26eBjqzZR",
+		"24116842358"}
 	conn := sbanken.NewAPIConnection(creds)
 
-	// fmt.Println(conn.HasToken())
+	log.Debug("%v", conn)
 
 	accounts := conn.GetAccounts()
+	if len(accounts) < 1 {
+		log.Fatal("No accounts found. Exiting.")
+		os.Exit(1)
+	}
+	fmt.Printf("\n\n\n\n")
+	fmt.Println(accounts)
+	fmt.Printf("\n\n\n\n")
+
+	log.Debug("Got accounts")
 
 	for _, account := range accounts {
 		fmt.Printf("%-14s %-40s %9.2f %s\n", account.AccountNumber, account.Name, account.Balance, account.AccountID)
-	}
-
-	//	r := *regexp.MustCompile(`^((?P<kort>\*\d+)\s(?P<dato>\d\d\.\d\d)\s(?P<valuta>[A-Z]{3})\s(?P<belop>\d+\.\d+))*(\s*(?P<tdato>\d+\.\d+))*\s?(?P<sted>.+?)((?i)\s(kurs):\s?(?P<kurs>\d+\.?\d+))*$`)
-
-	transactions := conn.GetTransactions("44BBE700A0F7EB22755C88C16ECA40D4")
-	for _, transaction := range transactions {
-
-		fmt.Printf("%v", transaction.Text)
-		//var transformation Transformation
-
-		/*		if transaction.CardDetailsSpecified {
-					transformation.CardNumber = transaction.CardDetails.CardNumber
-				} else {
-					// fmt.Println("%#v", r.SubexpNames())
-					res := r.FindStringSubmatch(transaction.Text)
-					for i := 0; i < len(res); i++ {
-
-						fmt.Printf("%s ||2: %i %s\n", transaction.Text, i, res[i])
-
-					}
-					fmt.Printf("\n")
-
-						}*/
-		/*
-		   	 	fmt.Printf("%-10s | %-8s |%-10s| %s| %s | %s | %9.2f\n",
-		   	 		transaction.AccountingDate,
-		               // transaction.CardDetailsSpecified,
-		               transaction.TransactionID,
-		               transformation.CardNumber,
-		   	 		// transaction.OtherAccountNumber,
-		   	 		transaction.Source,
-		   	 		transaction.TransactionID,
-		   	 		transaction.Text,
-		   	transaction.Amount)
-		*/
 	}
 
 }

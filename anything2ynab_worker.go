@@ -19,8 +19,7 @@ func main() {
 		log.Debug("Retur k:%v v.Name:%v", key, YAC.Name)
 	}
 
-	prov.Sbn()
-
+	prov.Sbanken()
 	// log.Info("YANB LOG ACCOUNT %", YnabLogAccount.Id)
 
 	//budget()
